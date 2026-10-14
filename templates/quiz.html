@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Plant Biology Quiz</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            min-height: 100vh;
+
+            background: linear-gradient(
+                135deg,
+                #e8f5e9,
+                #f1f8e9,
+                #e0f2f1
+            );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: #263238;
+
+        }
+
+
+        .quiz-container {
+
+            width: 90%;
+
+            max-width: 750px;
+
+            background: white;
+
+            border-radius: 25px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.12);
+
+        }
+
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .header h1 {
+
+            color: #2e7d32;
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .header p {
+
+            color: #78909c;
+
+            font-size: 15px;
+
+        }
+
+
+        .progress-area {
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .progress-text {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            font-size: 14px;
+
+            color: #607d8b;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 8px;
+
+            background: #e8f5e9;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+        }
+
+
+        .progress {
+
+            height: 100%;
+
+            width: 5%;
+
+            background: #43a047;
+
+            border-radius: 10px;
+
+            transition: width 0.3s;
+
+        }
+
+
+        #question {
+
+            font-size: 23px;
+
+            line-height: 1.5;
+
+            margin-bottom: 25px;
+
+            color: #263238;
+
+        }
+
+
+        #options {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+        }
+
+
+        .option {
+
+            width: 100%;
+
+            padding: 16px 20px;
+
+            border: 2px solid #e0e0e0;
+
+            border-radius: 12px;
+
+            background: white;
+
+            text-align: left;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            color: #37474f;
+
+        }
+
+
+        .option:hover {
+
+            border-color: #66bb6a;
+
+            background: #f1f8e9;
+
+            transform: translateX(3px);
+
+        }
+
+
+        .option.selected {
+
+            border-color: #43a047;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            font-weight: bold;
+
+        }
+
+
+        .option.correct {
+
+            background: #e8f5e9;
+
+            border-color: #43a047;
+
+            color: #2e7d32;
+
+        }
+
+
+        .option.wrong {
+
+            background: #ffebee;
+
+            border-color: #e53935;
+
+            color: #c62828;
+
+        }
+
+
+        .timer-box {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin: 25px 0;
+
+        }
+
+
+        .timer {
+
+            width: 75px;
+
+            height: 75px;
+
+            border-radius: 50%;
+
+            background: #f1f8e9;
+
+            border: 5px solid #81c784;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+        }
+
+
+        .timer span {
+
+            font-size: 11px;
+
+            color: #78909c;
+
+        }
+
+
+        #timer {
+
+            font-size: 23px;
+
+            font-weight: bold;
+
+            color: #2e7d32;
+
+        }
+
+
+        .button-area {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 25px;
+
+        }
+
+
+        .main-btn {
+
+            border: none;
+
+            padding: 14px 35px;
+
+            border-radius: 50px;
+
+            background: #43a047;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        .main-btn:hover {
+
+            background: #2e7d32;
+
+            transform: translateY(-2px);
+
+        }
+
+
+        #feedback {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            min-height: 25px;
+
+        }
+
+
+        /* =========================
+           RESULT SCREEN
+           ========================= */
+
+
+        .result {
+
+            text-align: center;
+
+            padding: 30px;
+
+        }
+
+
+        .result-icon {
+
+            font-size: 70px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .result h2 {
+
+            color: #2e7d32;
+
+            font-size: 32px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .performance-message {
+
+            font-size: 18px;
+
+            color: #607d8b;
+
+            margin-bottom: 20px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .score {
+
+            font-size: 26px;
+
+            color: #43a047;
+
+            font-weight: bold;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .result-details {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin: 25px 0;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .result-box {
+
+            background: #f1f8e9;
+
+            border-radius: 15px;
+
+            padding: 18px 25px;
+
+            min-width: 120px;
+
+        }
+
+
+        .result-box strong {
+
+            display: block;
+
+            font-size: 25px;
+
+            color: #388e3c;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .result-box span {
+
+            font-size: 13px;
+
+            color: #607d8b;
+
+        }
+
+
+        .result-buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            margin-top: 25px;
+
+        }
+
+
+        .restart-btn {
+
+            border: none;
+
+            background: #43a047;
+
+            color: white;
+
+            padding: 14px 25px;
+
+            border-radius: 50px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        .restart-btn:hover {
+
+            background: #2e7d32;
+
+            transform: translateY(-2px);
+
+        }
+
+
+        .home-btn {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            background: #78909c;
+
+            color: white;
+
+            padding: 14px 25px;
+
+            border-radius: 50px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+
+        }
+
+
+        .home-btn:hover {
+
+            background: #546e7a;
+
+            transform: translateY(-2px);
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .quiz-container {
+
+                padding: 25px;
+
+            }
+
+
+            .header h1 {
+
+                font-size: 24px;
+
+            }
+
+
+            #question {
+
+                font-size: 19px;
+
+            }
+
+
+            .result {
+
+                padding: 15px;
+
+            }
+
+
+            .result h2 {
+
+                font-size: 27px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="quiz-container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            🌿 Plant Biology Quiz
+        </h1>
+
+        <p>
+            Plant Structure & Function
+        </p>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-area">
+
+        <div class="progress-text">
+
+            <span id="questionNumber">
+                Question 1
+            </span>
+
+            <span>
+                {{ questions|length }} Questions
+            </span>
+
+        </div>
+
+
+        <div class="progress-bar">
+
+            <div
+                class="progress"
+                id="progress">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUIZ -->
+
+    <div id="quiz">
+
+
+        <h2 id="question"></h2>
+
+
+        <div id="options"></div>
+
+
+        <!-- TIMER -->
+
+        <div class="timer-box">
+
+            <div class="timer">
+
+                <span>
+                    TIME
+                </span>
+
+                <strong id="timer">
+                    15
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="button-area">
+
+            <button
+                id="checkBtn"
+                class="main-btn">
+
+                Check Answer
+
+            </button>
+
+
+            <button
+                id="nextBtn"
+                class="main-btn"
+                style="display:none;">
+
+                Next Question →
+
+            </button>
+
+        </div>
+
+
+        <!-- FEEDBACK -->
+
+        <p id="feedback"></p>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+// =========================
+// QUESTIONS FROM FLASK
+// =========================
+
+const questions = {{ questions | tojson }};
+
+
+// =========================
+// QUIZ VARIABLES
+// =========================
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let selectedAnswer = null;
+
+let timeLeft = 15;
+
+let timer;
+
+
+
+// =========================
+// SHOW QUESTION
+// =========================
+
+function showQuestion() {
+
+
+    clearInterval(timer);
+
+
+    selectedAnswer = null;
+
+    timeLeft = 15;
+
+
+    document.getElementById("feedback").textContent = "";
+
+
+    document.getElementById("checkBtn").style.display = "block";
+
+    document.getElementById("nextBtn").style.display = "none";
+
+
+    const question = questions[currentQuestion];
+
+
+    // Question
+
+    document.getElementById("question").textContent =
+
+        (currentQuestion + 1) +
+        ". " +
+        question.question;
+
+
+    // Question number
+
+    document.getElementById("questionNumber").textContent =
+
+        "Question " +
+        (currentQuestion + 1);
+
+
+    // Progress
+
+    const progress =
+
+        ((currentQuestion + 1) /
+        questions.length) * 100;
+
+
+    document.getElementById("progress").style.width =
+
+        progress + "%";
+
+
+    // Options
+
+    const optionsDiv =
+
+        document.getElementById("options");
+
+
+    optionsDiv.innerHTML = "";
+
+
+    question.options.forEach(function(option) {
+
+
+        const button =
+
+            document.createElement("button");
+
+
+        button.textContent = option;
+
+        button.className = "option";
+
+
+        button.onclick = function() {
+
+
+            selectedAnswer = option;
+
+
+            const allButtons =
+
+                optionsDiv.querySelectorAll(".option");
+
+
+            allButtons.forEach(function(btn) {
+
+                btn.classList.remove("selected");
+
+            });
+
+
+            button.classList.add("selected");
+
+        };
+
+
+        optionsDiv.appendChild(button);
+
+    });
+
+
+    startTimer();
+
+}
+
+
+
+// =========================
+// TIMER
+// =========================
+
+function startTimer() {
+
+
+    document.getElementById("timer").textContent =
+
+        timeLeft;
+
+
+    timer = setInterval(function() {
+
+
+        timeLeft--;
+
+
+        document.getElementById("timer").textContent =
+
+            timeLeft;
+
+
+        if (timeLeft <= 0) {
+
+
+            clearInterval(timer);
+
+
+            checkAnswer(true);
+
+        }
+
+
+    }, 1000);
+
+}
+
+
+
+// =========================
+// CHECK ANSWER
+// =========================
+
+function checkAnswer(timeUp = false) {
+
+
+    clearInterval(timer);
+
+
+    const question =
+
+        questions[currentQuestion];
+
+
+    const allButtons =
+
+        document.querySelectorAll(".option");
+
+
+    allButtons.forEach(function(button) {
+
+
+        button.disabled = true;
+
+
+        // Correct answer
+
+        if (button.textContent === question.answer) {
+
+            button.classList.add("correct");
+
+        }
+
+
+        // Wrong selected answer
+
+        if (
+            button.textContent === selectedAnswer &&
+            selectedAnswer !== question.answer
+        ) {
+
+            button.classList.add("wrong");
+
+        }
+
+    });
+
+
+    // Time up
+
+    if (timeUp) {
+
+
+        document.getElementById("feedback").textContent =
+
+            "⏰ Time's up! Correct answer: " +
+            question.answer;
+
+
+        document.getElementById("feedback").style.color =
+
+            "#e53935";
+
+    }
+
+
+    // Correct
+
+    else if (selectedAnswer === question.answer) {
+
+
+        score++;
+
+
+        document.getElementById("feedback").textContent =
+
+            "✓ Correct! Well done!";
+
+
+        document.getElementById("feedback").style.color =
+
+            "#2e7d32";
+
+    }
+
+
+    // Wrong
+
+    else {
+
+
+        document.getElementById("feedback").textContent =
+
+            "✗ Wrong! Correct answer: " +
+            question.answer;
+
+
+        document.getElementById("feedback").style.color =
+
+            "#c62828";
+
+    }
+
+
+    document.getElementById("checkBtn").style.display =
+
+        "none";
+
+
+    document.getElementById("nextBtn").style.display =
+
+        "block";
+
+}
+
+
+
+// =========================
+// CHECK BUTTON
+// =========================
+
+document.getElementById("checkBtn").onclick =
+
+    function() {
+
+
+        if (selectedAnswer === null) {
+
+
+            document.getElementById("feedback").textContent =
+
+                "Please select an answer first.";
+
+
+            document.getElementById("feedback").style.color =
+
+                "#f57c00";
+
+
+            return;
+
+        }
+
+
+        checkAnswer();
+
+    };
+
+
+
+// =========================
+// NEXT QUESTION
+// =========================
+
+document.getElementById("nextBtn").onclick =
+
+    function() {
+
+
+        currentQuestion++;
+
+
+        if (currentQuestion < questions.length) {
+
+
+            showQuestion();
+
+        }
+
+
+        else {
+
+
+            // =========================
+            // FINAL SCORE
+            // =========================
+
+            const percentage = Math.round(
+
+                (score / questions.length) * 100
+
+            );
+
+
+            const wrongAnswers =
+
+                questions.length - score;
+
+
+            // =========================
+            // PERFORMANCE MESSAGE
+            // =========================
+
+            let performanceMessage;
+
+            let resultIcon;
+
+
+            if (percentage >= 80) {
+
+                performanceMessage =
+                    "Excellent! 🎉 Outstanding performance!";
+
+                resultIcon = "🏆";
+
+            }
+
+            else if (percentage >= 60) {
+
+                performanceMessage =
+                    "Good job! 👏 Keep improving your knowledge!";
+
+                resultIcon = "🌟";
+
+            }
+
+            else if (percentage >= 40) {
+
+                performanceMessage =
+                    "Nice effort! 👍 A little more practice will help.";
+
+                resultIcon = "🌱";
+
+            }
+
+            else {
+
+                performanceMessage =
+                    "Keep practicing! 📚 You can do better next time.";
+
+                resultIcon = "💪";
+
+            }
+
+
+            // =========================
+            // RESULT SCREEN
+            // =========================
+
+            document.getElementById("quiz").innerHTML = `
+
+                <div class="result">
+
+
+                    <div class="result-icon">
+
+                        ${resultIcon}
+
+                    </div>
+
+
+                    <h2>
+
+                        Quiz Completed!
+
+                    </h2>
+
+
+                    <p class="performance-message">
+
+                        ${performanceMessage}
+
+                    </p>
+
+
+                    <p class="score">
+
+                        Your Score:
+                        ${score} /
+                        ${questions.length}
+
+                    </p>
+
+
+                    <div class="result-details">
+
+
+                        <div class="result-box">
+
+                            <strong>
+
+                                ${percentage}%
+
+                            </strong>
+
+                            <span>
+
+                                Percentage
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="result-box">
+
+                            <strong>
+
+                                ${score}
+
+                            </strong>
+
+                            <span>
+
+                                Correct
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="result-box">
+
+                            <strong>
+
+                                ${wrongAnswers}
+
+                            </strong>
+
+                            <span>
+
+                                Wrong
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="result-buttons">
+
+
+                        <button
+
+                            class="restart-btn"
+
+                            onclick="location.reload()">
+
+                            🔄 Restart Quiz
+
+                        </button>
+
+
+                        <a
+
+                            href="/"
+
+                            class="home-btn">
+
+                            🏠 Back to Home
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        }
+
+    };
+
+
+
+// =========================
+// START QUIZ
+// =========================
+
+showQuestion();
+
+
+</script>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
